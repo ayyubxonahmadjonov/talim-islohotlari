@@ -225,11 +225,6 @@ h2 i,h1 i{font-family:"ISerif";font-style:italic;font-weight:400;font-size:1.3em
 .frame.on .screen{animation:roll 1s .3s cubic-bezier(.3,1.2,.4,1) both}
 @keyframes roll{to{transform:scaleY(1)}}
 .screen video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:fill}
-.vcap{position:absolute;top:33%;height:32%;background:#fefefe;color:#222;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"ISerif",Georgia,serif;font-size:calc(var(--vw) * .05);line-height:1.2;opacity:0;white-space:nowrap}
-#cap1{left:40%;width:50%}
-#cap2{left:10%;width:39%}
-.vcap span{opacity:0;transition:opacity .35s}
-.vcap.on,.vcap span.on{opacity:1}
 #vSound{display:none;position:absolute;left:50%;bottom:130px;transform:translateX(-50%);font-weight:800;font-size:30px;padding:16px 34px;border-radius:99px;background:var(--yel);color:#2b2208;animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{50%{transform:translateX(-50%) scale(1.06)}}
 .after{position:absolute;left:0;right:0;bottom:70px;text-align:center;opacity:0;transform:translateY(30px);transition:opacity .6s,transform .8s cubic-bezier(.16,1,.3,1);pointer-events:none}

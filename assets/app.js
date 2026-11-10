@@ -158,19 +158,8 @@ quizFrame._next = function(){
 };
 quizShow(0, false);
 
-/* ───────── the end: dancing cat with Uzbek captions over the English ones ───────── */
+/* ───────── the end: dancing hamster (the video file already carries Uzbek captions) ───────── */
 var endFrame = $('#endFrame'), video = $('#endVideo'), vSound = $('#vSound'), after = $('#after'), tPlay;
-var CAPS = [[$('#cap1'), 0.45, 4.3, [0.5, 0.7]], [$('#cap2'), 8.45, 13.75, [8.5, 9.1]]];   // box, visible from–to, when each line appears
-function syncCaps(){
-  var t = video.currentTime;
-  CAPS.forEach(function(c){
-    var on = t >= c[1] && t < c[2]; c[0].classList.toggle('on', on);
-    $$('span', c[0]).forEach(function(sp, i){ sp.classList.toggle('on', on && t >= c[3][i]); });
-  });
-  if (!video.paused) requestAnimationFrame(syncCaps);
-}
-video.addEventListener('play', function(){ requestAnimationFrame(syncCaps); });
-video.addEventListener('seeked', syncCaps);
 function playEnd(){
   after.classList.remove('on'); vSound.style.display = 'none';
   try { video.currentTime = 0; } catch (e) {}
