@@ -158,32 +158,34 @@ quizFrame._next = function(){
 };
 quizShow(0, false);
 
-/* ───────── the end: dancing hamster (the video file already carries Uzbek captions) ───────── */
-var endFrame = $('#endFrame'), video = $('#endVideo'), vSound = $('#vSound'), after = $('#after'), tPlay;
-function playEnd(){
-  after.classList.remove('on'); vSound.style.display = 'none';
-  try { video.currentTime = 0; } catch (e) {}
-  video.muted = false;
-  var p = video.play();
-  if (p && p.catch) p.catch(function(){            // the browser blocked sound → play silently and offer a button
-    if (frames[STEPS[cur]] !== endFrame) return;
-    video.muted = true; vSound.style.display = 'block';
-    var q = video.play(); if (q && q.catch) q.catch(function(){});
-  });
+/* ───────── the end: the bell rings, the class runs away, the register gets a "5" ───────── */
+var endFrame = $('#endFrame'), after = $('#after'), endT = [];
+$('#jname').textContent = PRESENTER || '—';
+(function(){
+  // [emoji, bottom px, size px, start delay s, run time s] — they all face left, so they run out to the left
+  var kids = [['🏃‍♀️',150,150,1.3,1.5],['🏃',120,170,1.5,1.4],['🏃‍♂️',170,140,1.65,1.6],['🎒',330,90,1.8,1.3],['🏃‍♀️',110,160,2.0,1.4],['🏃',160,150,2.15,1.5],
+              ['📚',380,80,2.3,1.2],['🏃‍♂️',125,175,2.45,1.4],['🏃‍♀️',165,145,2.7,1.5],['✏️',300,70,2.85,1.3],['🏃',130,160,3.1,1.6]], h = '';
+  kids.forEach(function(k){ h += '<span style="--b:' + k[1] + 'px;--z:' + k[2] + 'px;--dl:' + k[3] + 's;--t:' + k[4] + 's"><i>' + k[0] + '</i></span>'; });
+  h += '<span class="snail" style="--b:176px;--z:110px;--dl:3.6s;--t:24s"><em>men ham ketyapman…</em><i>🐌</i></span>';
+  $('#run').innerHTML = h;
+})();
+function bell(){                                   // an electric school bell out of thin air: fast metallic strikes
+  for (var i = 0; i < 15; i++) (function(i){
+    endT.push(setTimeout(function(){ beep([1320], 0.16, 'square', 0.035); beep([1975, 2640], 0.08, 'triangle', 0.05); }, 700 + i * 160));
+  })(i);
 }
-vSound.onclick = function(){ video.muted = false; vSound.style.display = 'none'; try { video.currentTime = 0; } catch (e) {} video.play(); };
-video.addEventListener('click', function(){ if (video.paused) video.play(); else video.pause(); });
-video.addEventListener('ended', function(){ after.classList.add('on'); boom({particleCount: 160, spread: 120, origin: {y: 0.5}}); });
+function playEnd(){
+  endT.forEach(clearTimeout); endT = [];
+  after.classList.remove('on');
+  endFrame.classList.remove('play'); void endFrame.offsetWidth; endFrame.classList.add('play');
+  bell();
+  endT.push(setTimeout(function(){ sfx.ok(); boom({particleCount: 150, spread: 100, origin: {x: 0.6, y: 0.6}}); }, 8700));
+  endT.push(setTimeout(function(){ boom({particleCount: 90, angle: 60, spread: 70, origin: {x: 0, y: 0.75}}); boom({particleCount: 90, angle: 120, spread: 70, origin: {x: 1, y: 0.75}}); }, 9800));
+  endT.push(setTimeout(function(){ after.classList.add('on'); }, 11500));
+}
 $('#again').onclick = function(){ playEnd(); };
-endFrame._enter = function(){
-  clearTimeout(tPlay);
-  tPlay = setTimeout(function(){
-    if (frames[STEPS[cur]] !== endFrame) return;
-    playEnd();
-    boom({particleCount: 110, angle: 60, spread: 70, origin: {x: 0, y: 0.75}}); boom({particleCount: 110, angle: 120, spread: 70, origin: {x: 1, y: 0.75}});
-  }, 1300);
-};
-endFrame._leave = function(){ clearTimeout(tPlay); video.pause(); };
+endFrame._enter = function(){ playEnd(); };
+endFrame._leave = function(){ endT.forEach(clearTimeout); endT = []; };
 
 /* ───────── fun bits: sounds, confetti ───────── */
 var AC;
