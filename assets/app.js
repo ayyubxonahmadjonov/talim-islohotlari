@@ -9,14 +9,14 @@ var PRESENTER = 'Soliha';          // title frame: "taqdimotchi: …". Leave '' 
 /* where each frame sits on the board: [column, row, tilt in degrees] — a snake-shaped road */
 var POS_L = [[0,0,0],[1,-.06,-5],[2,.05,4],[3,-.04,-3],[4,.04,6],
            [4,1,-4],[3,1.06,5],[2,.96,-6],[1,1.05,3],[0,1,-4],
-           [0,2.02,5],[1,1.98,-3],[2,2.04,0]];
+           [0,2.02,5],[1,1.98,-3],[2,2.04,0],[3,1.98,-3]];
 /* phones held upright get a narrow, tall road: two columns */
-var POS_P = [[0,0,0],[1,.05,-4],[1,1,3],[0,1.04,-3],[0,2,4],[1,2.04,-4],[1,3,3],[0,3.05,-3],[0,4,4],[1,4.04,-3],[1,5,3],[0,5.04,-3],[0,6,0]];
+var POS_P = [[0,0,0],[1,.05,-4],[1,1,3],[0,1.04,-3],[0,2,4],[1,2.04,-4],[1,3,3],[0,3.05,-3],[0,4,4],[1,4.04,-3],[1,5,3],[0,5.04,-3],[0,6,0],[1,6.04,3]];
 var POS = POS_L;
-var SIGNS_P = ['Start','Avloniy','1991','Qonun','Universitet','Alifbo','Test','Umid','Dastur','9 + 3','Savollar','Xulosa','Tamom'];
-var SIGNS = ['Boshlanish','Avloniy','1991','1992 · Qonun','1992 · Universitet','1993 · Alifbo','1994 · Test','1997 · Umid','1997 · Dastur','9 + 3','Savollar','Xulosa','Tamom'];
+var SIGNS_P = ['Start','Avloniy','1991','Qonun','Universitet','Alifbo','Test','Umid','Dastur','9 + 3','Savollar','Xulosa','Tamom','Miyov'];
+var SIGNS = ['Boshlanish','Avloniy','1991','1992 · Qonun','1992 · Universitet','1993 · Alifbo','1994 · Test','1997 · Umid','1997 · Dastur','9 + 3','Savollar','Xulosa','Tamom','Miyov'];
 /* the order of the show: frame numbers, with one bird's-eye view of the whole road before the quiz */
-var STEPS = [0,1,2,3,4,5,6,7,8,9,'ov',10,11,12];
+var STEPS = [0,1,2,3,4,5,6,7,8,9,'ov',10,11,12,13];
 
 var UNIS = [['Andijon','pedagogika instituti','Andijon','davlat universiteti'],['Buxoro','pedagogika instituti','Buxoro','davlat universiteti'],
             ['Namangan','pedagogika instituti','Namangan','davlat universiteti'],['Qarshi','pedagogika instituti','Qarshi','davlat universiteti'],
@@ -182,10 +182,108 @@ function playEnd(){
   endT.push(setTimeout(function(){ sfx.ok(); boom({particleCount: 150, spread: 100, origin: {x: 0.6, y: 0.6}}); }, 8700));
   endT.push(setTimeout(function(){ boom({particleCount: 90, angle: 60, spread: 70, origin: {x: 0, y: 0.75}}); boom({particleCount: 90, angle: 120, spread: 70, origin: {x: 1, y: 0.75}}); }, 9800));
   endT.push(setTimeout(function(){ after.classList.add('on'); }, 11500));
+  endT.push(setTimeout(function(){ if (frameOf(cur) === endFrame) go(cur + 1); }, 14500));   // …and then the cat has something to say
 }
 $('#again').onclick = function(){ playEnd(); };
-endFrame._enter = function(){ playEnd(); };
+endFrame._enter = function(){ playEnd(); Kitty.preload(['p1','p2','p3'].map(function(n){ return VO + n + '.m4a'; })); };
 endFrame._leave = function(){ endT.forEach(clearTimeout); endT = []; };
+
+/* ───────── the very last stop: a cat walks in and thanks everybody, in subtitles ───────── */
+var VO = 'assets/voice/';                         // his recorded lines; without them he falls back to pips
+var catFrame = $('#catFrame'), catEl = Kitty.make($('#kwrap')), catAfter = $('#catAfter'), catT = [], catTalk = null;
+(function(){
+  // paw prints from the left edge up to where he sits: [left %, bottom px, tilt]
+  var steps = [[4,150,70],[10,96,84],[17,150,72],[24,96,86],[31,150,74],[38,100,88]], h = '';
+  steps.forEach(function(p, i){
+    h += '<svg viewBox="0 0 60 60" style="left:' + p[0] + '%;bottom:' + p[1] + 'px;--r:' + p[2] + 'deg;--i:' + i + '"><ellipse cx="30" cy="40" rx="15" ry="12"/><circle cx="11" cy="24" r="6"/><circle cx="23" cy="13" r="6"/><circle cx="37" cy="13" r="6"/><circle cx="49" cy="24" r="6"/></svg>';
+  });
+  $('#paws').innerHTML = h;
+})();
+function mew(){                                   // the cat's "voice": one soft pip per syllable or so
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    var o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime, f = 620 + Math.random() * 260;
+    o.type = 'triangle'; o.frequency.setValueAtTime(f, t); o.frequency.exponentialRampToValueAtTime(f * 1.22, t + 0.05);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.05, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + 0.08);
+  } catch (e) {}
+}
+function hearts(n){
+  var box = $('#khearts'), set = ['💛','🤍','🧡','✨','🐾'], h = '', i;
+  for (i = 0; i < n; i++) h += '<span style="left:' + Math.round(8 + Math.random() * 84) + '%;--dl:' + (Math.random() * 1.6).toFixed(2) + 's;--t:' + (2.4 + Math.random() * 1.6).toFixed(2) + 's;--z:' + Math.round(44 + Math.random() * 44) + 'px">' + set[i % set.length] + '</span>';
+  box.innerHTML = h;
+}
+function stopCat(){
+  catT.forEach(function(t){ if (t && t.__interval) clearInterval(t.__interval); else clearTimeout(t); }); catT = [];
+  if (catTalk) catTalk.stop(); catTalk = null;
+}
+function playCat(){
+  stopCat();
+  var subs = $('#subs'), out = $('#subT');
+  catAfter.classList.remove('on'); subs.classList.remove('on'); out.textContent = ''; $('#khearts').innerHTML = '';
+  catEl.setAttribute('class', 'kitty');
+  catFrame.classList.remove('play'); void catFrame.offsetWidth; catFrame.classList.add('play');
+  catT.push(setTimeout(function(){ beep([880, 1320], 0.07, 'triangle', 0.06); }, 1500));
+  catTalk = Kitty.talk({
+    cat: catEl, start: 2500, blip: mew,
+    lines: [
+      {t: 'Miyov! Prezentatsiyamiz tugadi 🐾', v: VO + 'p1.m4a', hold: 500, before: function(){ subs.classList.add('on'); }},
+      {t: 'Vaqt ajratib tinglaganingiz uchun hammangizga katta rahmat 🤍', v: VO + 'p2.m4a'},
+      {t: 'Hammangizga yoqqan boʻlsa, biz juda xursandmiz. Buni Soliha bilan kechasi bilan uxlamay tayyorladik ✨', v: VO + 'p3.m4a',
+       after: function(){ boom({particleCount: 110, spread: 90, origin: {y: 0.7}}); }, hold: 2600},
+      {t: 'Ustoz, agar alo baho qoʻymasangiz — rozi emasmiz! 😄', v: VO + 'p4.m4a', before: function(){ catEl.classList.add('tilt'); }, after: function(){ catEl.classList.remove('tilt'); }},
+      {t: 'Endi esa… kutilmagan kichkina sovgʻa bor 🎁', v: VO + 'p5.m4a', hold: 1200},
+      {t: 'Uni ochish uchun pastdagi «Ochish» tugmasini bosing 👇', v: VO + 'p6.m4a', before: function(){ catEl.classList.add('happy'); }, hold: 1400}
+    ],
+    line: function(){ out.textContent = ''; return out; },
+    done: function(){
+      catEl.classList.add('happy'); hearts(14); sfx.ok();
+      catT.push(setTimeout(function(){ $('#gift').classList.add('on'); }, 600));
+    }
+  });
+}
+/* the gift: Ochish → optional "film it" note + 10s countdown → the flower reveal */
+var GIFT_URL = 'https://ayyubxonahmadjonov.github.io/soliha/gul/';
+function openGift(){
+  if (catFrame.classList.contains('opening')) return;
+  $('#gift').classList.remove('on'); catFrame.classList.add('opening'); sfx.pop();
+  catT.push(setTimeout(function(){
+    var rec = $('#record'), cEl = $('#recCount'), n = 10;
+    rec.classList.add('on'); cEl.textContent = n; beep([880, 1320], 0.08, 'triangle', 0.05);
+    var tick = setInterval(function(){
+      n--;
+      if (n <= 0){ clearInterval(tick); reveal(); return; }
+      cEl.textContent = n; void cEl.offsetWidth; cEl.className = 'rec-count'; cEl.classList.add('x'); beep([660], 0.06, 'triangle', 0.05);
+    }, 1000);
+    catT.push({__interval: tick});
+  }, 700));
+}
+function reveal(){
+  var r = $('#reveal'), fr = $('#revealFrame');
+  fr.src = GIFT_URL; r.classList.add('on');
+  boom({particleCount: 160, spread: 100, origin: {y: 0.5}});
+  catT.push(setTimeout(function(){ boom({particleCount: 90, angle: 60, spread: 70, origin: {x: 0, y: 0.7}}); boom({particleCount: 90, angle: 120, spread: 70, origin: {x: 1, y: 0.7}}); }, 700));
+}
+$('#openGift').onclick = openGift;
+$('#revealClose').onclick = function(){ var r = $('#reveal'); r.classList.remove('on'); setTimeout(function(){ $('#revealFrame').src = 'about:blank'; }, 1000); };
+$('#catAgain').onclick = function(){ playCat(); };
+/* browsers block sound until the viewer interacts: the first tap/key anywhere wakes the audio up.
+   if the cat stop is opened cold (e.g. a direct #15 link) it waits for that first tap instead of talking silently. */
+var audioReady = false, pendingCat = false, swallowUntil = 0;
+function unlockAudio(){
+  if (audioReady) return; audioReady = true;
+  try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch (e) {}
+  if (pendingCat){ pendingCat = false; swallowUntil = Date.now() + 600; $('#catTap').classList.remove('on'); playCat(); }   // the tap that woke the cat shouldn't also skip him
+}
+document.addEventListener('pointerdown', unlockAudio, true);
+document.addEventListener('keydown', unlockAudio, true);
+catFrame._enter = function(){
+  Kitty.preload(['p1','p2','p3','p4','p5','p6'].map(function(n){ return VO + n + '.m4a'; }));
+  if (audioReady) playCat();
+  else { pendingCat = true; $('#catTap').classList.add('on'); }
+};
+catFrame._leave = function(){ stopCat(); pendingCat = false; $('#catTap').classList.remove('on'); catFrame.classList.remove('opening'); $('#record').classList.remove('on'); };
+catFrame._next = function(){ return !!(catTalk && catTalk.skip()); };    // → hurries him along, line by line
 
 /* ───────── fun bits: sounds, confetti ───────── */
 var AC;
@@ -265,6 +363,7 @@ document.addEventListener('keydown', function(e){
 // tap anywhere: right part → next, left edge → back (buttons and quiz answers keep their own clicks)
 stage.addEventListener('click', function(e){
   var t = e.target;
+  if (Date.now() < swallowUntil) return;                 // this tap only woke the audio up
   if (t.closest && t.closest('[data-i],button,a,video')) return;
   if (e.clientX / window.innerWidth < 0.22) prev(); else next();
 });

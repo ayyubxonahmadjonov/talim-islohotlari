@@ -13,6 +13,7 @@
 <meta name="theme-color" content="#1c2f27">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/kitty.css">
 </head>
 <body>
 
@@ -229,8 +230,37 @@
     <div class="after" id="after"><button id="again" data-i>↻ yana bir marta</button></div>
   </section>
 
+  <!-- 14 ───────── MIYOV: a cat walks in and thanks everybody, in subtitles -->
+  <section class="frame f-cat" id="catFrame">
+    <svg class="doodle c-star1" viewBox="0 0 120 120"><path class="draw" style="--d:16" pathLength="1" d="M60 8 L73 44 L112 46 L81 69 L92 108 L60 85 L28 108 L39 69 L8 46 L47 44 Z"/></svg>
+    <svg class="doodle c-star2" viewBox="0 0 120 120"><path class="draw" style="--d:20" pathLength="1" d="M60 8 L73 44 L112 46 L81 69 L92 108 L60 85 L28 108 L39 69 L8 46 L47 44 Z"/></svg>
+    <svg class="doodle c-heart" viewBox="0 0 120 110"><path class="draw" style="--d:24" pathLength="1" d="M60 100 C10 62 6 30 30 16 C46 8 58 20 60 34 C62 20 74 8 90 16 C114 30 110 62 60 100 Z"/></svg>
+    <svg class="doodle c-yarn" viewBox="0 0 240 150"><path class="draw" style="--d:18" pathLength="1" d="M70 20 C30 20 10 50 14 82 C18 116 50 136 82 130 C114 124 132 96 126 64 C120 36 98 20 70 20 M24 56 C54 48 92 60 122 92 M16 88 C50 70 92 74 118 110 M48 26 C70 46 78 92 64 132 M92 26 C104 50 104 92 92 126 M82 130 C120 150 150 110 178 128 S220 140 232 118"/></svg>
+    <div class="pawtrail" id="paws"></div>
+    <div class="kwrap" id="kwrap"></div>
+    <div class="khearts" id="khearts"></div>
+    <div class="subs" id="subs"><b>Mushuk</b><p><span id="subT"></span><i></i></p></div>
+    <div class="cattap" id="catTap"><span>🔊</span>Ovozni eshitish uchun ekranga bosing</div>
+    <div class="gift" id="gift">
+      <div class="giftbox" id="giftbox"><span class="gb-lid"></span><span class="gb-body"></span><span class="gb-bow">🎀</span></div>
+      <button id="openGift" data-i>🎁 Ochish</button>
+    </div>
+    <div class="record" id="record">
+      <div class="rec-note">📱 Istasangiz, bu lahzani telefoningizda suratga oling</div>
+      <div class="rec-count" id="recCount">10</div>
+    </div>
+    <div class="after" id="catAfter"><button id="catAgain" data-i>↻ yana bir marta</button></div>
+  </section>
+
  </div></div>
  <div id="ovcap"><b>1991 → 1997</b><span>yetti yil — bitta yoʻl</span></div>
+</div>
+
+<!-- the gift itself: a full-screen reveal that fades in after the countdown -->
+<div id="reveal">
+  <div id="revealShade"></div>
+  <iframe id="revealFrame" title="Sovgʻa" allow="autoplay; fullscreen"></iframe>
+  <button id="revealClose" title="Yopish">✕</button>
 </div>
 
 <div id="woodT"></div><div id="woodB"></div>
@@ -238,11 +268,12 @@
 <div id="hud">
   <button id="fsBtn" title="Toʻliq ekran (F)">⛶</button>
   <button id="prevBtn" title="Orqaga">‹</button>
-  <div id="counter">1 / 14</div>
+  <div id="counter">1 / 15</div>
   <button id="nextBtn" title="Oldinga">›</button>
 </div>
 
 <script src="assets/confetti.min.js"></script>
+<script src="assets/kitty.js"></script>
 <script src="assets/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Maktub</title>
+<meta name="theme-color" content="#1c2f27">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✉️</text></svg>">
+<link rel="stylesheet" href="assets/kitty.css">
+<style>
+@font-face{font-family:"Unbounded";src:url(assets/fonts/Unbounded.woff2) format("woff2");font-weight:200 900;font-display:swap}
+@font-face{font-family:"Golos";src:url(assets/fonts/GolosText.woff2) format("woff2");font-weight:400 900;font-display:swap}
+@font-face{font-family:"Caveat";src:url(assets/fonts/Caveat.woff2) format("woff2");font-weight:400 700;font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#16261f;-webkit-tap-highlight-color:transparent}
+body{font-family:"Golos",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#f4f1e6;
+  background:#1c2f27;background-image:radial-gradient(ellipse at 20% 15%,rgba(255,255,255,.07),rgba(255,255,255,0) 45%),radial-gradient(ellipse at 85% 80%,rgba(255,255,255,.05),rgba(255,255,255,0) 50%)}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:root{--chalk:#f4f1e6;--yel:#ffe27a;--pink:#ff9eb5;--ink:#1c2a4a}
+.wood{position:fixed;left:0;width:100%;z-index:5;background:linear-gradient(#a8743f,#7a4f26);pointer-events:none}
+.wood.t{top:0;height:8px}.wood.b{bottom:0;height:12px;box-shadow:0 -6px 16px rgba(0,0,0,.35)}
+section{position:absolute;left:0;top:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;transition:opacity .7s}
+
+/* ── 1 · the sealed envelope ── */
+#s1{justify-content:center;padding:24px;text-align:center}
+#s1.gone{opacity:0;pointer-events:none}
+.to{font-family:"Caveat";font-weight:700;font-size:64px;font-size:clamp(52px,13vw,92px);line-height:1;color:var(--yel);animation:up .9s .2s both}
+.only{font-size:19px;font-size:clamp(17px,4.4vw,24px);font-weight:600;opacity:.9;margin:12px 0 34px;animation:up .9s .5s both}
+.env{display:block;width:78vw;max-width:400px;animation:up .9s .8s both}
+.env svg{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 22px 30px rgba(0,0,0,.45));animation:float 3.2s ease-in-out infinite alternate}
+@keyframes float{from{transform:translateY(0) rotate(-1.5deg)}to{transform:translateY(-12px) rotate(1.5deg)}}
+.env .ears{animation:peek 4.5s ease-in-out infinite}
+@keyframes peek{0%,55%,100%{transform:translateY(0)}65%,90%{transform:translateY(-16px)}}
+.env .flap{transform-box:fill-box;transform-origin:50% 0;transition:transform .6s cubic-bezier(.5,0,.3,1)}
+.env .seal{transform-box:fill-box;transform-origin:50% 50%;transition:transform .35s cubic-bezier(.3,1.6,.5,1),opacity .3s .1s}
+.env.open .seal{transform:scale(1.5);opacity:0}
+.env.open .flap{transform:scaleY(-1);transition-delay:.25s}
+.env.open .ears{animation:none;transform:translateY(-34px);transition:transform .4s .7s}
+.hint{margin-top:30px;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,241,230,.6);animation:up .9s 1.4s both}
+@keyframes up{from{opacity:0;transform:translateY(30px)}to{opacity:1}}
+
+/* ── 2 · the cat reads the letter out ── */
+#s2{opacity:0;pointer-events:none;padding:18px 16px 26px;padding-bottom:calc(26px + env(safe-area-inset-bottom))}
+#s2.on{opacity:1;pointer-events:auto}
+.kwrap{flex:none;width:30vh;max-width:62vw;min-width:150px;margin-top:6px;transform-origin:50% 100%;opacity:0}
+#s2.on .kwrap{animation:catIn 1s .5s cubic-bezier(.3,1.3,.5,1) both}
+@keyframes catIn{0%{opacity:0;transform:translateY(60vh) scale(.7,1.25)}30%{opacity:1}60%{transform:translateY(-14px) scale(1.04,.96)}80%{transform:translateY(0) scale(.97,1.04)}100%{opacity:1;transform:none}}
+.kwrap.hop{animation:hop .45s ease-in-out 4 alternate!important;opacity:1}
+@keyframes hop{to{transform:translateY(-26px) scale(.98,1.03)}}
+.letter{position:relative;flex:1 1 0;min-height:0;width:100%;max-width:680px;margin-top:-6px;overflow-y:auto;-webkit-overflow-scrolling:touch;border-radius:6px;
+  --lh:40px;background:#fbf7ea;background-image:linear-gradient(90deg,rgba(0,0,0,0) var(--mg),rgba(230,80,90,.5) var(--mg),rgba(230,80,90,.5) calc(var(--mg) + 3px),rgba(0,0,0,0) calc(var(--mg) + 3px)),repeating-linear-gradient(rgba(0,0,0,0) 0,rgba(0,0,0,0) calc(var(--lh) - 2px),rgba(90,150,220,.32) calc(var(--lh) - 2px),rgba(90,150,220,.32) var(--lh));background-attachment:local;background-position:0 0,0 14px;--mg:42px;
+  color:var(--ink);padding:22px 22px 30px 58px;box-shadow:0 18px 40px rgba(0,0,0,.45);opacity:0;transform:translateY(40px)}
+#s2.on .letter{opacity:1;transform:none;transition:opacity .6s 1.2s,transform .8s 1.2s cubic-bezier(.16,1,.3,1)}
+.letter p{position:relative;font-family:"Caveat";font-weight:700;font-size:29px;line-height:var(--lh);margin-bottom:var(--lh);min-height:var(--lh)}
+.letter p.big{font-size:36px;color:#c2283a}
+.letter p i{display:inline-block;width:3px;height:.8em;margin-left:4px;vertical-align:-.05em;background:#c2283a;border-radius:2px;animation:caret .8s steps(2) infinite}
+.letter p.old i{display:none}
+@keyframes caret{50%{opacity:0}}
+.bar{flex:none;width:100%;max-width:680px;min-height:20px;text-align:center}
+.tip{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,241,230,.5);margin-top:12px;transition:opacity .5s}
+.ask{display:none;margin-top:18px}
+.ask.on{display:flex}
+.ask button{flex:1 1 0;margin:0 7px;padding:18px 10px;border-radius:20px;border:3px solid var(--chalk);font-family:"Caveat";font-weight:700;font-size:32px;line-height:1.05;animation:pop .5s cubic-bezier(.3,1.5,.5,1) both;transition:transform .2s,background .2s}
+.ask button:nth-child(2){animation-delay:.15s}
+.ask button:active{transform:scale(.96);background:rgba(255,255,255,.12)}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1}}
+.fin{display:none;margin-top:16px}
+.fin.on{display:block;animation:up .7s both}
+.fin a,.fin button{display:inline-block;margin:0 6px 8px;padding:13px 24px;border-radius:99px;border:2px solid rgba(244,241,230,.7);font-weight:700;font-size:16px;color:var(--chalk);text-decoration:none}
+.hearts{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:4;overflow:hidden}
+.hearts span{position:absolute;bottom:-60px;line-height:1;opacity:0;animation:floatUp var(--t) var(--dl) ease-out both}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(.4)}12%{opacity:1}100%{opacity:0;transform:translateY(-105vh) scale(1.15) rotate(18deg)}}
+@media (min-height:820px) and (min-width:600px){.letter{--lh:46px;--mg:52px;padding-left:70px}.letter p{font-size:34px}.letter p.big{font-size:42px}}
+@media (max-height:620px){.kwrap{width:24vh}}
+</style>
+</head>
+<body>
+<div class="wood t"></div><div class="wood b"></div>
+
+<section id="s1">
+  <p class="to">Soliha uchun</p>
+  <p class="only">Bu boʻlim faqat siz uchun 🤍<br>Yolgʻiz qolganingizda, shoshilmasdan oching.</p>
+  <button class="env" id="env" aria-label="Maktubni ochish">
+    <svg viewBox="0 -70 420 350">
+      <g class="ears" fill="#f6a552" stroke="#3b2417" stroke-width="6" stroke-linejoin="round">
+        <path d="M140 30 L150 -40 Q154 -52 164 -44 L204 -8 Z"/><path d="M280 30 L270 -40 Q266 -52 256 -44 L216 -8 Z"/>
+        <path d="M156 4 L160 -28 L184 -8 Z" fill="#ffb7c5" stroke="none"/><path d="M264 4 L260 -28 L236 -8 Z" fill="#ffb7c5" stroke="none"/>
+      </g>
+      <rect x="0" y="0" width="420" height="280" rx="12" fill="#e6cf9c"/>
+      <path d="M0 280 V12 L210 176 L420 12 V280 Z" fill="#f6e7c1"/>
+      <path d="M0 280 L168 142 M420 280 L252 142" stroke="rgba(90,60,20,.18)" stroke-width="3" fill="none"/>
+      <path class="flap" d="M6 0 H414 Q420 0 414 6 L222 158 Q210 168 198 158 L6 6 Q0 0 6 0 Z" fill="#f0dcae" stroke="rgba(90,60,20,.2)" stroke-width="2"/>
+      <g class="seal"><circle cx="210" cy="150" r="34" fill="#c81e2b"/><circle cx="210" cy="150" r="27" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+        <path d="M210 166 C190 152 190 138 199 135 C205 133 209 138 210 142 C211 138 215 133 221 135 C230 138 230 152 210 166 Z" fill="#fff4e2"/></g>
+    </svg>
+  </button>
+  <p class="hint">ochish uchun konvertga bosing</p>
+</section>
+
+<section id="s2">
+  <div class="kwrap" id="kwrap"></div>
+  <div class="letter" id="letter"></div>
+  <div class="bar">
+    <p class="tip" id="tip">🔊 ovozni yoqing · oʻtkazib yuborish uchun qogʻozga bosing</p>
+    <div class="ask" id="ask"><button id="yes">Ha, imkon beraman 🤍</button><button id="no">Yo‘q</button></div>
+    <div class="fin" id="fin"></div>
+  </div>
+</section>
+<div class="hearts" id="hearts"></div>
+
+<script src="assets/confetti.min.js"></script>
+<script src="assets/kitty.js"></script>
+<script>
+(function(){
+'use strict';
+/* ───────── settings ───────── */
+var CONTACT = '';        // e.g. 'https://t.me/username' — adds a "write to him" button after she answers. '' hides it.
+
+/* the letter, line by line. Both answers are treated with the same respect. */
+var LETTER = [
+  {t: 'Miyov… Salom, Soliha 🐾', big: 1, hold: 900},
+  'Ayyubxon bu gaplarni sizga yetkazib qoʻyishimni soʻradi.',
+  'Bilaman, siz unga «yoʻq» dedingiz. Lekin u yana bir bor urinib koʻrmoqchi.',
+  'Bu taqdimot — uning oʻzi ayta olmagan gaplarini sizga yetkazishning bir yoʻli.',
+  'U sizni rostdan ham yoqtirib qolgan. Siz rad etganingizdan keyin ham koʻnglingizga yoʻl topishga harakat qilyapti.',
+  'Toʻgʻri, balki u siz oʻylagan yigit emasdir. Lekin oʻshanday boʻlishga chin dildan harakat qilyapti.',
+  {t: 'Balki unga yana bir imkon berarsiz, degan umidda mendan yordam soʻradi.', tilt: 1},
+  {t: 'Qarorni oʻzingiz chiqarasiz: pastda «Ha» va «Yoʻq» tugmalari bor.', big: 1},
+  '«Yoʻq» desangiz ham, u fikringizni hurmat qiladi va sizni boshqa bezovta qilmaydi.',
+  'Va nima deb javob bersangiz ham, unutilmas ikki hafta uchun, sevgi degan tuygʻuni his qilishiga yordam berganingiz uchun sizga kattakon rahmat aytadi.'
+];
+var YES = [{t: 'Miyov!!! 🤍', big: 1, hold: 700}, 'Rahmat, Soliha.', 'Bu Ayyubxon uchun dunyodagi eng katta sovgʻa.', 'U bu imkoniyatni asrab-avaylaydi.'];
+var NO  = [{t: 'Tushundim 🤍', big: 1, hold: 700}, 'Ayyubxon fikringizni hurmat qiladi va sizni boshqa bezovta qilmaydi.', 'Unutilmas ikki hafta uchun sizga yana bir bor rahmat.', 'U sizga faqat baxt tilaydi.'];
+
+function $(s){ return document.querySelector(s); }
+var s1 = $('#s1'), s2 = $('#s2'), env = $('#env'), letter = $('#letter'), ask = $('#ask'), fin = $('#fin'), tip = $('#tip'), kwrap = $('#kwrap');
+var cat = Kitty.make(kwrap), talker = null, AC, MUTE = /[?&]mute=1/.test(location.search);
+var VO = 'assets/voice/';   // the cat's recorded lines: m1… the letter, y1… after «Ha», n1… after «Yoʻq»
+
+function chime(freqs){                                 // a soft little bell, nothing more
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    freqs.forEach(function(f, i){
+      var o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime + i * 0.13;
+      o.type = 'sine'; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.07, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.7);
+      o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + 0.75);
+    });
+  } catch (e) {}
+}
+function say(lines, done, pre){
+  // the handwriting font has no ʻ / ʼ, so the letter is written with the curly quotes it does have
+  lines = lines.map(function(L, n){ L = typeof L === 'string' ? {t: L} : L; L.v = VO + pre + (n + 1) + '.m4a'; L.t = L.t.replace(/ʻ/g, '‘').replace(/ʼ/g, '’'); return L; });
+  talker = Kitty.talk({
+    cat: cat, lines: lines, speed: 46, start: 300, done: done, mute: MUTE,
+    line: function(i, L){
+      var old = letter.querySelector('p:not(.old)'); if (old) old.className += ' old';
+      var p = document.createElement('p'), sp = document.createElement('span');
+      if (L.big) p.className = 'big';
+      p.appendChild(sp); p.appendChild(document.createElement('i')); letter.appendChild(p);
+      cat.classList[L.tilt ? 'add' : 'remove']('tilt');
+      return sp;
+    },
+    typed: function(){ letter.scrollTop = letter.scrollHeight; }
+  });
+}
+function hearts(n){
+  var set = ['🤍','💛','🧡','✨','🤍'], h = '', i;
+  for (i = 0; i < n; i++) h += '<span style="left:' + Math.round(4 + Math.random() * 90) + '%;font-size:' + Math.round(24 + Math.random() * 30) + 'px;--dl:' + (Math.random() * 2.4).toFixed(2) + 's;--t:' + (3.4 + Math.random() * 2.4).toFixed(2) + 's">' + set[i % set.length] + '</span>';
+  $('#hearts').innerHTML = h;
+}
+function ending(){
+  var h = '';
+  if (CONTACT) h += '<a href="' + CONTACT + '" target="_blank" rel="noopener">Ayyubxonga yozish ✉️</a>';
+  h += '<button id="re">↻ boshidan eshitish</button>';
+  fin.innerHTML = h; fin.className = 'fin on';
+  $('#re').onclick = function(){ location.reload(); };
+}
+function start(){
+  letter.innerHTML = ''; ask.className = 'ask'; fin.className = 'fin'; tip.style.opacity = '';
+  cat.setAttribute('class', 'kitty');
+  say(LETTER, function(){ tip.style.display = 'none'; ask.className = 'ask on'; chime([784]); }, 'm');
+}
+env.onclick = function(){
+  if (env.className.indexOf('open') > -1) return;
+  env.className += ' open'; chime([659, 880]);
+  var pl = [], n; for (n = 1; n <= LETTER.length; n++) pl.push(VO + 'm' + n + '.m4a'); Kitty.preload(pl);
+  setTimeout(function(){ s1.className = 'gone'; s2.className = 'on'; }, 1100);
+  setTimeout(start, 2600);
+};
+letter.onclick = function(){ if (talker) talker.skip(); };
+$('#yes').onclick = function(){
+  ask.className = 'ask'; cat.classList.remove('tilt'); cat.classList.add('happy'); kwrap.className = 'kwrap hop';
+  chime([659, 784, 1047]); hearts(26);
+  if (window.confetti) try { window.confetti({particleCount: 120, spread: 90, origin: {y: 0.35}, colors: ['#ff9eb5', '#ffe27a', '#fff4e2', '#f6a552']}); } catch (e) {}
+  say(YES, ending, 'y');
+};
+$('#no').onclick = function(){
+  ask.className = 'ask'; cat.classList.remove('tilt'); cat.classList.add('calm');
+  chime([523]);
+  say(NO, ending, 'n');
+};
+// testing helpers: ?open=1 skips the envelope, &a=yes / &a=no also jumps straight to that answer
+var T = /[?&]a=(yes|no)/.exec(location.search);
+if (/[?&]open=1/.test(location.search)){
+  s1.className = 'gone'; s2.className = 'on'; setTimeout(start, 900);
+  if (T) setTimeout(function(){ while (talker.skip()){} $('#' + T[1]).onclick(); }, 1500);
+}
+})();
+</script>
+</body>
+</html>

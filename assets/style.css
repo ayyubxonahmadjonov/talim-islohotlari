@@ -276,6 +276,32 @@ h2 i,h1 i{font-family:"ISerif";font-style:italic;font-weight:400;font-size:1.3em
 .after.on{opacity:1;transform:none;pointer-events:auto}
 .after button{font-weight:800;font-size:26px;padding:14px 30px;border-radius:99px;border:3px solid var(--chalk);background:#1c2f27}
 
+/* ───────── 14 · the cat: paw prints → he hops in → talks in subtitles (starts when .play is added) ───────── */
+.f-cat .doodle{width:120px}
+.c-star1{left:17%;top:17%;transform:rotate(-14deg)}.c-star1 .draw{stroke:var(--yel)}
+.c-star2{right:19%;top:13%;width:86px!important;transform:rotate(12deg)}.c-star2 .draw{stroke:var(--blue)}
+.c-heart{right:14%;top:40%;transform:rotate(10deg)}.c-heart .draw{stroke:var(--pink)}
+.c-yarn{left:7%;bottom:300px;width:250px!important}.c-yarn .draw{stroke:var(--pink);stroke-width:4;animation-duration:3s}
+.pawtrail{position:absolute;left:0;right:0;bottom:120px;height:0}
+.pawtrail svg{position:absolute;width:62px;height:62px;fill:var(--chalk);opacity:0;transform:rotate(var(--r))}
+.f-cat.play .pawtrail svg{animation:pawIn 5s calc(var(--i) * .2s + .2s) both}
+@keyframes pawIn{0%{opacity:0;transform:rotate(var(--r)) scale(.3)}4%{opacity:.5;transform:rotate(var(--r)) scale(1.15)}8%{opacity:.5;transform:rotate(var(--r))}70%{opacity:.5;transform:rotate(var(--r))}100%{opacity:.16;transform:rotate(var(--r))}}
+.kwrap{position:absolute;left:50%;top:150px;width:580px;margin-left:-290px;opacity:0;transform-origin:50% 100%}
+.f-cat.play .kwrap{animation:catIn 1s 1.5s cubic-bezier(.3,1.3,.5,1) both}
+@keyframes catIn{0%{opacity:0;transform:translateY(520px) scale(.7,1.25)}30%{opacity:1}60%{transform:translateY(-34px) scale(1.04,.96)}80%{transform:translateY(0) scale(.97,1.04)}100%{opacity:1;transform:none}}
+.subs{position:absolute;left:50%;bottom:74px;width:1360px;margin-left:-680px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 44px 24px;border-radius:26px;background:rgba(8,14,11,.84);box-shadow:0 18px 40px rgba(0,0,0,.4);opacity:0;transform:translateY(40px);transition:opacity .4s,transform .6s cubic-bezier(.16,1,.3,1)}
+.subs.on{opacity:1;transform:none}
+.subs b{position:absolute;left:36px;top:-24px;font-family:"Unbounded";font-weight:800;font-size:22px;letter-spacing:.06em;text-transform:uppercase;background:var(--yel);color:#2b2208;padding:9px 20px;border-radius:99px}
+.subs b:before{content:"🐾 "}
+.subs p{font-weight:800;font-size:50px;line-height:1.22;color:#fff}
+.subs i{display:inline-block;width:5px;height:.9em;margin-left:6px;vertical-align:-.08em;background:var(--yel);border-radius:3px;animation:caret .8s steps(2) infinite}
+@keyframes caret{50%{opacity:0}}
+.khearts{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.khearts span{position:absolute;bottom:260px;font-size:var(--z);line-height:1;opacity:0;animation:floatUp var(--t) var(--dl) ease-out both}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(.4)}15%{opacity:1}100%{opacity:0;transform:translateY(-640px) scale(1.15) rotate(18deg)}}
+.f-cat .after{opacity:0;bottom:auto;top:54px}
+.f-cat .after.on{opacity:1}
+
 /* ───────── wooden frame + controls (sized from the real screen) ───────── */
 #woodT,#woodB{position:fixed;left:0;width:100%;z-index:39;background:linear-gradient(#a8743f,#7a4f26);pointer-events:none}
 #woodT{top:0;height:calc(var(--hb,48px) * .16)}
@@ -349,3 +375,52 @@ body.pt .tface{font-size:190px}
 body.pt .bub{font-size:36px}
 body.pt .after{bottom:200px}
 body.pt #ovcap b{font-size:54px}
+body.pt .kwrap{top:330px;width:820px;margin-left:-410px}
+body.pt .subs{width:980px;margin-left:-490px;bottom:300px;min-height:260px}
+body.pt .subs p{font-size:56px}
+body.pt .subs b{font-size:26px}
+body.pt .c-star1{left:8%;top:9%}.pt .c-star2{right:9%;top:7%}
+body.pt .c-heart{right:6%;top:26%}
+body.pt .c-yarn{display:none}
+body.pt .pawtrail{bottom:620px}
+body.pt .khearts span{bottom:700px}
+body.pt .f-cat .after{top:150px}
+
+/* ───────── 14b · the gift: an "Ochish" button → a 10s countdown → a full-screen reveal ───────── */
+.gift{position:absolute;left:0;right:0;bottom:250px;text-align:center;opacity:0;transform:translateY(24px);transition:opacity .6s,transform .7s cubic-bezier(.16,1,.3,1);pointer-events:none;z-index:2}
+.gift.on{opacity:1;transform:none;pointer-events:auto}
+.giftbox{position:relative;display:block;width:120px;height:110px;margin:0 auto 14px}
+.gb-body{position:absolute;left:10px;bottom:0;width:100px;height:74px;background:linear-gradient(#ff7aa2,#e84f86);border-radius:8px;box-shadow:0 10px 24px rgba(0,0,0,.4)}
+.gb-body:before{content:"";position:absolute;left:44px;top:0;width:12px;height:100%;background:rgba(255,255,255,.55)}
+.gb-lid{position:absolute;left:0;top:28px;width:120px;height:30px;background:linear-gradient(#ff8fb0,#ef6294);border-radius:7px;box-shadow:0 6px 14px rgba(0,0,0,.35);transform-origin:50% 100%}
+.gb-bow{position:absolute;left:0;right:0;top:-18px;text-align:center;font-size:46px;line-height:1}
+.gift.on .giftbox{animation:giftWobble 1.3s ease-in-out infinite}
+@keyframes giftWobble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.gift button{font-family:"Unbounded";font-weight:800;font-size:30px;padding:16px 42px;border-radius:99px;border:0;background:linear-gradient(90deg,#ffd36a,#ff9ec0);color:#2b1020;box-shadow:0 12px 30px rgba(255,158,192,.4);animation:giftPulse 1.6s ease-in-out infinite}
+@keyframes giftPulse{50%{transform:scale(1.06)}}
+.f-cat.opening .giftbox{animation:giftPop .6s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes giftPop{60%{transform:scale(1.2) rotate(0)}100%{transform:scale(1.35) rotate(0);opacity:0}}
+.f-cat.opening .gb-lid{animation:lidFly .6s cubic-bezier(.4,0,.6,1) forwards}
+@keyframes lidFly{to{transform:translateY(-120px) rotate(-30deg);opacity:0}}
+
+.record{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,18,14,.9);opacity:0;pointer-events:none;transition:opacity .5s;z-index:3}
+.record.on{opacity:1}
+.rec-note{font-family:"Unbounded";font-weight:800;font-size:46px;color:#fff;text-align:center;padding:0 60px;margin-bottom:40px;max-width:1100px}
+.rec-count{font-family:"Unbounded";font-weight:900;font-size:300px;line-height:1;color:var(--yel);text-shadow:0 10px 40px rgba(255,226,122,.3)}
+.record.on .rec-count{animation:countPop .9s ease-out}
+@keyframes countPop{0%{transform:scale(1.5);opacity:.2}30%{opacity:1}100%{transform:scale(1)}}
+
+#reveal{position:fixed;inset:0;z-index:60;opacity:0;pointer-events:none;transition:opacity 1s}
+#reveal.on{opacity:1;pointer-events:auto}
+#revealShade{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#2a1420,#140a10)}
+#revealFrame{position:absolute;inset:0;width:100%;height:100%;border:0;opacity:0;transform:scale(1.04);transition:opacity 1.1s .3s,transform 1.4s .3s cubic-bezier(.16,1,.3,1)}
+#reveal.on #revealFrame{opacity:1;transform:none}
+#revealClose{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:61;width:46px;height:46px;border-radius:50%;font-size:22px;color:#fff;background:rgba(0,0,0,.45);opacity:0;transition:opacity .5s 1.6s}
+#reveal.on #revealClose{opacity:.8}
+body.pt .rec-note{font-size:40px}
+body.pt .rec-count{font-size:220px}
+body.pt .gift{bottom:420px}
+.cattap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:none;flex-direction:column;align-items:center;gap:14px;font-family:"Unbounded";font-weight:800;font-size:34px;color:#fff;text-align:center;padding:0 60px;z-index:4;text-shadow:0 4px 16px rgba(0,0,0,.6)}
+.cattap.on{display:flex;animation:up .6s both}
+.cattap span{font-size:88px;animation:giftPulse 1.3s ease-in-out infinite}
+body.pt .cattap{font-size:30px}

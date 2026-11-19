@@ -1,0 +1,57 @@
+/* Kitty — the cat itself: colours and the small movements that make him alive.
+   Markup comes from kitty.js. Classes on the <svg>: .talk .wave .happy .calm .tilt */
+.kitty{display:block;width:100%;height:auto;overflow:visible}
+.kitty .k-o{fill:#f6a552;stroke:#3b2417;stroke-width:6;stroke-linejoin:round}
+.kitty .k-c{fill:#fff4e2}
+.kitty .k-line{stroke:#3b2417;stroke-width:6}
+.kitty .k-in{fill:#ffb7c5}
+.kitty .k-st{fill:none;stroke:#e07f35;stroke-width:9;stroke-linecap:round}
+.kitty .k-toe{fill:none;stroke:#3b2417;stroke-width:3.5;stroke-linecap:round}
+.kitty .k-shadow{fill:rgba(0,0,0,.28)}
+.kitty .k-tol{fill:none;stroke:#3b2417;stroke-width:44;stroke-linecap:round}
+.kitty .k-tf{fill:none;stroke:#f6a552;stroke-width:32;stroke-linecap:round}
+.kitty .k-ts{fill:none;stroke:#e07f35;stroke-width:32;stroke-dasharray:12 30;stroke-dashoffset:-44}
+.kitty .k-iris{fill:#3f8f62}
+.kitty .k-pupil{fill:#22160f}
+.kitty .k-hi{fill:#fff}
+.kitty .k-blush{fill:#ff8fa6;opacity:.55}
+.kitty .k-nose{fill:#ff7f98;stroke:#3b2417;stroke-width:4;stroke-linejoin:round}
+.kitty .k-mouth,.kitty .k-happy,.kitty .k-calm{fill:none;stroke:#3b2417;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.kitty .k-happy,.kitty .k-calm{stroke-width:7;opacity:0;transition:opacity .25s}
+.kitty .k-mo{fill:#8c2c3d;stroke:#3b2417;stroke-width:4;stroke-linejoin:round}
+.kitty .k-tongue{fill:#ff8fa6}
+.kitty .k-wh{fill:none;stroke:#3b2417;stroke-width:3.5;stroke-linecap:round;opacity:.7}
+.kitty .k-bow path,.kitty .k-bow rect{fill:#3f6fe0;stroke:#3b2417;stroke-width:5;stroke-linejoin:round}
+.kitty .k-bow .k-dot{fill:#fff;opacity:.85}
+
+/* breathing, tail, ear, blink — always on */
+.kitty .k-all{transform-origin:200px 440px;animation:k-breathe 2.3s ease-in-out infinite alternate}
+@keyframes k-breathe{to{transform:scale(1.012,1.02)}}
+.kitty .k-tail{animation:k-tail 1.9s ease-in-out infinite alternate}
+@keyframes k-tail{from{transform:rotate(-8deg)}to{transform:rotate(9deg)}}
+.kitty .k-ear{transform-origin:74px -62px;animation:k-ear 5.5s infinite}
+@keyframes k-ear{0%,86%,100%{transform:rotate(0)}89%{transform:rotate(14deg)}92%{transform:rotate(-4deg)}95%{transform:rotate(9deg)}}
+.kitty .k-eye{transform-box:fill-box;transform-origin:50% 55%;animation:k-blink 4.6s infinite;transition:opacity .2s}
+@keyframes k-blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+
+/* talking: the mouth is driven letter by letter from JS, the head nods along */
+.kitty .k-mopen{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(.08);transition:transform .07s}
+.kitty .k-head{transform-origin:0 100px;transition:transform .7s cubic-bezier(.3,1.4,.5,1)}
+.kitty.talk .k-head{animation:k-nod .46s ease-in-out infinite alternate}
+@keyframes k-nod{from{transform:rotate(-2.2deg)}to{transform:rotate(2.2deg) translateY(-3px)}}
+.kitty.tilt .k-head{transform:rotate(-9deg)}
+
+/* paw: rests on the ground, waves when asked */
+.kitty .k-arm{transform:rotate(4deg);transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
+.kitty.wave .k-arm{animation:k-wave 2.2s ease-in-out both}
+@keyframes k-wave{0%,100%{transform:rotate(4deg)}14%{transform:rotate(-142deg)}28%{transform:rotate(-116deg)}42%{transform:rotate(-144deg)}56%{transform:rotate(-116deg)}70%{transform:rotate(-144deg)}84%{transform:rotate(-120deg)}}
+
+/* moods */
+.kitty.happy .k-eye,.kitty.calm .k-eye{opacity:0}
+.kitty.happy .k-happy{opacity:1}
+.kitty.calm .k-calm{opacity:1}
+.kitty.happy .k-blush{opacity:.85}
+.kitty.happy .k-arm{transform:rotate(-132deg)}
+.kitty.happy .k-tail{animation-duration:.5s}
+.kitty.calm .k-head{transform:rotate(0) translateY(10px)}
+.kitty.calm .k-tail{animation-duration:3.4s}
