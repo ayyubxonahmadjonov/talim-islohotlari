@@ -7,16 +7,14 @@
 var PRESENTER = 'Soliha';          // title frame: "taqdimotchi: …". Leave '' to hide.
 
 /* where each frame sits on the board: [column, row, tilt in degrees] — a snake-shaped road */
-var POS_L = [[0,0,0],[1,-.06,-5],[2,.05,4],[3,-.04,-3],[4,.04,6],
-           [4,1,-4],[3,1.06,5],[2,.96,-6],[1,1.05,3],[0,1,-4],
-           [0,2.02,5],[1,1.98,-3],[2,2.04,0],[3,1.98,-3]];
+var POS_L = [[0,0,0],[1,-0.06,-5],[2,0.05,4],[3,-0.04,-3],[4,0.04,6],[4,1,-4],[3,1.06,5],[2,0.96,-6],[1,1.05,3],[0,1,-4],[0,2.02,5],[1,1.98,-3],[2,2.04,0],[3,1.98,-3],[4,2.02,4],[4,3,-4],[3,3.05,5],[2,2.96,-3],[1,3.02,3]];
 /* phones held upright get a narrow, tall road: two columns */
-var POS_P = [[0,0,0],[1,.05,-4],[1,1,3],[0,1.04,-3],[0,2,4],[1,2.04,-4],[1,3,3],[0,3.05,-3],[0,4,4],[1,4.04,-3],[1,5,3],[0,5.04,-3],[0,6,0],[1,6.04,3]];
+var POS_P = [[0,0.0,-4],[1,0.54,3],[1,1.0,-3],[0,1.54,4],[0,2.0,-4],[1,2.54,3],[1,3.0,-3],[0,3.54,4],[0,4.0,-4],[1,4.54,3],[1,5.0,-3],[0,5.54,4],[0,6.0,-4],[1,6.54,3],[1,7.0,-3],[0,7.54,4],[0,8.0,-4],[1,8.54,3],[1,9.0,-3]];
 var POS = POS_L;
-var SIGNS_P = ['Start','Avloniy','1991','Qonun','Universitet','Alifbo','Test','Umid','Dastur','9 + 3','Savollar','Xulosa','Tamom','Miyov'];
-var SIGNS = ['Boshlanish','Avloniy','1991','1992 · Qonun','1992 · Universitet','1993 · Alifbo','1994 · Test','1997 · Umid','1997 · Dastur','9 + 3','Savollar','Xulosa','Tamom','Miyov'];
+var SIGNS_P = ['Start','Avloniy','1991','Qonun','Universitet','Alifbo','Test','Raqamlar','Umid','Dastur','Bilasizmi','9+3','Xronologiya','Savollar','Xulosa','Bugun','Tilak','Tamom','Miyov'];
+var SIGNS = ['Boshlanish','Avloniy','1991','1992 · Qonun','1992 · Universitet','1993 · Alifbo','1994 · Test','Raqamlar','1997 · Umid','1997 · Dastur','Bilasizmi?','9 + 3','Xronologiya','Savollar','Xulosa','Avval → Keyin','Tilak','Tamom','Miyov'];
 /* the order of the show: frame numbers, with one bird's-eye view of the whole road before the quiz */
-var STEPS = [0,1,2,3,4,5,6,7,8,9,'ov',10,11,12,13];
+var STEPS = [0,1,2,3,4,5,6,7,8,9,10,11,12,'ov',13,14,15,16,17,18];
 
 var UNIS = [['Andijon','pedagogika instituti','Andijon','davlat universiteti'],['Buxoro','pedagogika instituti','Buxoro','davlat universiteti'],
             ['Namangan','pedagogika instituti','Namangan','davlat universiteti'],['Qarshi','pedagogika instituti','Qarshi','davlat universiteti'],
@@ -303,6 +301,16 @@ var sfx = {
   pop: function(){ beep([520, 780], 0.06, 'triangle', 0.08); }
 };
 function boom(o){ if (window.confetti) try { window.confetti(o || {particleCount: 120, spread: 90, origin: {y: 0.6}}); } catch (e) {} }
+
+/* ───────── the numbers stop: counters tick up when the camera lands ───────── */
+var numFrame = $('.f-num');
+if (numFrame) numFrame._enter = function(){
+  $$('.num b[data-to]', numFrame).forEach(function(b){
+    var to = +b.getAttribute('data-to'), start = 0, dur = 1100;
+    function step(ts){ if (!start) start = ts; var p = Math.min(1, (ts - start) / dur); b.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); }
+    b.textContent = '0'; requestAnimationFrame(step);
+  });
+};
 
 /* ───────── flying between stops ───────── */
 function frameOf(n){ var s = STEPS[n]; return s === 'ov' ? null : frames[s]; }
