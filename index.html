@@ -316,8 +316,9 @@
     <div class="khearts" id="khearts"></div>
     <div class="subs" id="subs"><b>Mushuk</b><p><span id="subT"></span><i></i></p></div>
     <div class="cattap" id="catTap"><span>🔊</span>Ovozni eshitish uchun ekranga bosing</div>
-    <div class="gift" id="gift">
+    <div class="giftintro" id="giftIntro">
       <div class="giftbox" id="giftbox"><span class="gb-lid"></span><span class="gb-body"></span><span class="gb-bow">🎀</span></div>
+      <div class="gi-title">Endi — kichkinagina bir <i>sovgʻamiz</i> bor</div>
       <button id="openGift" data-i>🎁 Ochish</button>
     </div>
     <div class="record" id="record">
@@ -331,11 +332,21 @@
  <div id="ovcap"><b>1991 → 1997</b><span>yetti yil — bitta yoʻl</span></div>
 </div>
 
-<!-- the gift itself: a full-screen reveal that fades in after the countdown -->
+<!-- "Solihaga sovgʻa" splash, then the flower itself full-screen, then the question -->
+<div id="flowerSplash"><span>🌷</span><b>Solihaga sovgʻa</b></div>
 <div id="reveal">
   <div id="revealShade"></div>
   <iframe id="revealFrame" title="Sovgʻa" allow="autoplay; fullscreen"></iframe>
   <button id="revealClose" title="Yopish">✕</button>
+  <button id="revealNext" data-i>Davom etish →</button>
+</div>
+<div id="confess">
+  <div class="cf-inner">
+    <div class="cf-lead">Soliha…</div>
+    <div class="cf-text">Balki Ayyubxonga bir <i>imkon</i> berarsiz?<span>U siz oʻylagan yigit emas — lekin koʻnglingizga yoʻl topishga astoydil harakat qilyapti.</span></div>
+    <div class="cf-ask" id="cfAsk"><button id="cfYes" data-i>Ha 💛</button><button id="cfNo" data-i>Yoʻq</button></div>
+    <div class="cf-reply" id="cfReply"></div>
+  </div>
 </div>
 
 <div id="woodT"></div><div id="woodB"></div>

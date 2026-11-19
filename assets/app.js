@@ -219,8 +219,10 @@ function playCat(){
   stopCat();
   var subs = $('#subs'), out = $('#subT');
   catAfter.classList.remove('on'); subs.classList.remove('on'); out.textContent = ''; $('#khearts').innerHTML = '';
+  $('#giftIntro').classList.remove('on'); $('#record').classList.remove('on'); $('#flowerSplash').classList.remove('on');
+  $('#reveal').classList.remove('on'); $('#confess').classList.remove('on'); $('#revealFrame').src = 'about:blank';
   catEl.setAttribute('class', 'kitty');
-  catFrame.classList.remove('play'); void catFrame.offsetWidth; catFrame.classList.add('play');
+  catFrame.classList.remove('play', 'gone', 'opening'); void catFrame.offsetWidth; catFrame.classList.add('play');
   catT.push(setTimeout(function(){ beep([880, 1320], 0.07, 'triangle', 0.06); }, 1500));
   catTalk = Kitty.talk({
     cat: catEl, start: 2500, blip: mew,
@@ -228,42 +230,70 @@ function playCat(){
       {t: 'Miyov! Prezentatsiyamiz tugadi 🐾', v: VO + 'p1.m4a', hold: 500, before: function(){ subs.classList.add('on'); }},
       {t: 'Vaqt ajratib tinglaganingiz uchun hammangizga katta rahmat 🤍', v: VO + 'p2.m4a'},
       {t: 'Hammangizga yoqqan boʻlsa, biz juda xursandmiz. Buni Soliha bilan kechasi bilan uxlamay tayyorladik ✨', v: VO + 'p3.m4a',
-       after: function(){ boom({particleCount: 110, spread: 90, origin: {y: 0.7}}); }, hold: 2600},
-      {t: 'Ustoz, agar alo baho qoʻymasangiz — rozi emasmiz! 😄', v: VO + 'p4.m4a', before: function(){ catEl.classList.add('tilt'); }, after: function(){ catEl.classList.remove('tilt'); }},
-      {t: 'Endi esa… kutilmagan kichkina sovgʻa bor 🎁', v: VO + 'p5.m4a', hold: 1200},
-      {t: 'Uni ochish uchun pastdagi «Ochish» tugmasini bosing 👇', v: VO + 'p6.m4a', before: function(){ catEl.classList.add('happy'); }, hold: 1400}
+       after: function(){ boom({particleCount: 110, spread: 90, origin: {y: 0.7}}); }, hold: 2200}
     ],
     line: function(){ out.textContent = ''; return out; },
     done: function(){
-      catEl.classList.add('happy'); hearts(14); sfx.ok();
-      catT.push(setTimeout(function(){ $('#gift').classList.add('on'); }, 600));
+      catEl.classList.add('happy'); catEl.classList.add('wave'); hearts(14); sfx.ok();
+      // the cat waves and bows out, then a full-screen gift intro takes over
+      catT.push(setTimeout(function(){ subs.classList.remove('on'); catFrame.classList.add('gone'); }, 1400));
+      catT.push(setTimeout(function(){ $('#giftIntro').classList.add('on'); sfx.pop(); }, 2300));
     }
   });
 }
-/* the gift: Ochish → optional "film it" note + 10s countdown → the flower reveal */
+/* the gift: Ochish → 10s "film it" countdown → "Solihaga sovgʻa" splash → the flower, then the question */
 var GIFT_URL = 'https://ayyubxonahmadjonov.github.io/soliha/gul/';
 function openGift(){
   if (catFrame.classList.contains('opening')) return;
-  $('#gift').classList.remove('on'); catFrame.classList.add('opening'); sfx.pop();
+  $('#giftIntro').classList.remove('on'); catFrame.classList.add('opening'); sfx.pop();
   catT.push(setTimeout(function(){
     var rec = $('#record'), cEl = $('#recCount'), n = 10;
     rec.classList.add('on'); cEl.textContent = n; beep([880, 1320], 0.08, 'triangle', 0.05);
     var tick = setInterval(function(){
       n--;
-      if (n <= 0){ clearInterval(tick); reveal(); return; }
-      cEl.textContent = n; void cEl.offsetWidth; cEl.className = 'rec-count'; cEl.classList.add('x'); beep([660], 0.06, 'triangle', 0.05);
+      if (n <= 0){ clearInterval(tick); rec.classList.remove('on'); splash(); return; }
+      cEl.textContent = n; void cEl.offsetWidth; cEl.className = 'rec-count'; beep([660], 0.06, 'triangle', 0.05);
     }, 1000);
     catT.push({__interval: tick});
   }, 700));
 }
+function splash(){
+  $('#flowerSplash').classList.add('on'); sfx.ok();
+  boom({particleCount: 140, spread: 100, origin: {y: 0.5}});
+  catT.push(setTimeout(reveal, 1800));
+}
 function reveal(){
-  var r = $('#reveal'), fr = $('#revealFrame');
+  var r = $('#reveal'), fr = $('#revealFrame'), nx = $('#revealNext');
   fr.src = GIFT_URL; r.classList.add('on');
-  boom({particleCount: 160, spread: 100, origin: {y: 0.5}});
-  catT.push(setTimeout(function(){ boom({particleCount: 90, angle: 60, spread: 70, origin: {x: 0, y: 0.7}}); boom({particleCount: 90, angle: 120, spread: 70, origin: {x: 1, y: 0.7}}); }, 700));
+  catT.push(setTimeout(function(){ $('#flowerSplash').classList.remove('on'); }, 700));
+  nx.classList.remove('show');
+  catT.push(setTimeout(function(){ nx.classList.add('show'); }, 6000));   // let the flower play, then invite the last step
+}
+function askConfess(){
+  var r = $('#reveal');
+  r.classList.remove('on'); setTimeout(function(){ $('#revealFrame').src = 'about:blank'; }, 1000);
+  $('#cfReply').className = 'cf-reply'; $('#cfReply').textContent = ''; $('#cfAsk').style.display = '';
+  $('#confess').classList.add('on');
 }
 $('#openGift').onclick = openGift;
-$('#revealClose').onclick = function(){ var r = $('#reveal'); r.classList.remove('on'); setTimeout(function(){ $('#revealFrame').src = 'about:blank'; }, 1000); };
+$('#revealNext').onclick = askConfess;
+$('#revealClose').onclick = askConfess;
+$('#cfYes').onclick = function(){
+  $('#cfAsk').style.display = 'none';
+  var rep = $('#cfReply'); rep.textContent = 'Rahmat, Soliha 💛 Bu Ayyubxon uchun eng katta sovgʻa.'; rep.className = 'cf-reply on';
+  sfx.ok(); hearts(30);
+  if (window.confetti) try { window.confetti({particleCount: 160, spread: 100, origin: {y: 0.4}, colors: ['#ff9eb5', '#ffe27a', '#fff4e2', '#f6a552']}); } catch (e) {}
+  notify('💚💚💚 Soliha «HA» ni bosdi — imkon berdi!');
+};
+$('#cfNo').onclick = function(){
+  $('#cfAsk').style.display = 'none';
+  var rep = $('#cfReply'); rep.textContent = 'Tushundim 🤍 Fikringizni hurmat qilamiz. Unutilmas kunlar uchun rahmat — baxtli boʻling.'; rep.className = 'cf-reply on calm';
+  sfx.pop();
+  notify('🤍 Soliha «Yoʻq» ni bosdi.');
+};
+/* tells Ayyubxon her answer; the token lives in the Vercel relay, never in this public page. local runs are refused by the relay's origin check. */
+var NOTIFY_URL = 'https://soliha-tilak.vercel.app/api/tilak';
+function notify(text){ try { var b = new FormData(); b.set('text', text); fetch(NOTIFY_URL, { method: 'POST', body: b, keepalive: true })['catch'](function(){}); } catch (e) {} }
 $('#catAgain').onclick = function(){ playCat(); };
 /* browsers block sound until the viewer interacts: the first tap/key anywhere wakes the audio up.
    if the cat stop is opened cold (e.g. a direct #15 link) it waits for that first tap instead of talking silently. */
@@ -276,11 +306,16 @@ function unlockAudio(){
 document.addEventListener('pointerdown', unlockAudio, true);
 document.addEventListener('keydown', unlockAudio, true);
 catFrame._enter = function(){
-  Kitty.preload(['p1','p2','p3','p4','p5','p6'].map(function(n){ return VO + n + '.m4a'; }));
+  Kitty.preload(['p1','p2','p3'].map(function(n){ return VO + n + '.m4a'; }));
   if (audioReady) playCat();
   else { pendingCat = true; $('#catTap').classList.add('on'); }
 };
-catFrame._leave = function(){ stopCat(); pendingCat = false; $('#catTap').classList.remove('on'); catFrame.classList.remove('opening'); $('#record').classList.remove('on'); };
+catFrame._leave = function(){
+  stopCat(); pendingCat = false; $('#catTap').classList.remove('on');
+  catFrame.classList.remove('opening', 'gone'); $('#record').classList.remove('on');
+  $('#giftIntro').classList.remove('on'); $('#flowerSplash').classList.remove('on');
+  $('#reveal').classList.remove('on'); $('#confess').classList.remove('on'); $('#revealFrame').src = 'about:blank';
+};
 catFrame._next = function(){ return !!(catTalk && catTalk.skip()); };    // → hurries him along, line by line
 
 /* ───────── fun bits: sounds, confetti ───────── */
