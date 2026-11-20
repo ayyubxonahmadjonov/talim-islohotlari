@@ -394,7 +394,7 @@ window.addEventListener('resize', fit);
 window.addEventListener('orientationchange', function(){ setTimeout(fit, 250); });
 fit();
 var start = parseInt((location.hash || '').replace('#', ''), 10);
-start = start > 0 ? Math.min(start, STEPS.length) - 1 : 0;
+start = start > 0 ? Math.min(start, STEPS.length) - 1 : (FOR_SOLIXA ? STEPS.length - 1 : 0);   // the private link jumps straight to the cat/gift stop
 for (var i = 0; i < start; i++){ var pf = frameOf(i); if (pf){ pf.classList.add('on'); $$('.frag', pf).forEach(function(x){ x.classList.add('shown'); }); } }   // opened in the middle → earlier stops count as visited
 go(start);
 })();
