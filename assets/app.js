@@ -4,7 +4,7 @@
 'use strict';
 
 /* ───────── settings ───────── */
-var PRESENTER = 'Soliha';          // title frame: "taqdimotchi: …". Leave '' to hide.
+var PRESENTER = 'Solixa';          // title frame: "taqdimotchi: …". Leave '' to hide.
 
 /* where each frame sits on the board: [column, row, tilt in degrees] — a snake-shaped road */
 var POS_L = [[0,0,0],[1,-0.06,-5],[2,0.05,4],[3,-0.04,-3],[4,0.04,6],[4,1,-4],[3,1.06,5],[2,0.96,-6],[1,1.05,3],[0,1,-4],[0,2.02,5],[1,1.98,-3],[2,2.04,0],[3,1.98,-3],[4,2.02,4],[4,3,-4],[3,3.05,5],[2,2.96,-3],[1,3.02,3]];
@@ -229,7 +229,7 @@ function playCat(){
     lines: [
       {t: 'Miyov! Prezentatsiyamiz tugadi 🐾', v: VO + 'p1.m4a', hold: 500, before: function(){ subs.classList.add('on'); }},
       {t: 'Vaqt ajratib tinglaganingiz uchun hammangizga katta rahmat 🤍', v: VO + 'p2.m4a'},
-      {t: 'Hammangizga yoqqan boʻlsa, biz juda xursandmiz. Buni Soliha bilan kechasi bilan uxlamay tayyorladik ✨', v: VO + 'p3.m4a',
+      {t: 'Hammangizga yoqqan boʻlsa, biz juda xursandmiz. Buni Solixa bilan kechasi bilan uxlamay tayyorladik ✨', v: VO + 'p3.m4a',
        after: function(){ boom({particleCount: 110, spread: 90, origin: {y: 0.7}}); }, hold: 2200}
     ],
     line: function(){ out.textContent = ''; return out; },
@@ -241,7 +241,7 @@ function playCat(){
     }
   });
 }
-/* the gift: Ochish → 10s "film it" countdown → "Solihaga sovgʻa" splash → the flower, then the question */
+/* the gift opens straight into the flower (no countdown) */
 var GIFT_URL = 'https://ayyubxonahmadjonov.github.io/soliha/gul/';
 /* the surprise must survive until the classroom board: it opens only on a big 4K/smart-board screen,
    never on her own phone or Mac. `?unlock=board` in the URL forces it, as a guaranteed override on the day. */
@@ -254,23 +254,14 @@ function isBoard(){
 }
 function openGift(){
   if (isBoard()) { realOpenGift(); return; }
-  $('#notyet').classList.add('on'); sfx.no();                     // on an ordinary device: "don't open it yet, Soliha"
+  $('#notyet').classList.add('on'); sfx.no();                     // on an ordinary device: "don't open it yet, Solixa"
 }
 $('#nyBack').onclick = function(){ $('#notyet').classList.remove('on'); };
 /* the real reveal: countdown + flower. only reached on the big board (or with ?unlock=board) */
 function realOpenGift(){
   if (catFrame.classList.contains('opening')) return;
   $('#giftIntro').classList.remove('on'); catFrame.classList.add('opening'); sfx.pop();
-  catT.push(setTimeout(function(){
-    var rec = $('#record'), cEl = $('#recCount'), n = 10;
-    rec.classList.add('on'); cEl.textContent = n; beep([880, 1320], 0.08, 'triangle', 0.05);
-    var tick = setInterval(function(){
-      n--;
-      if (n <= 0){ clearInterval(tick); rec.classList.remove('on'); reveal(); return; }
-      cEl.textContent = n; void cEl.offsetWidth; cEl.className = 'rec-count'; beep([660], 0.06, 'triangle', 0.05);
-    }, 1000);
-    catT.push({__interval: tick});
-  }, 700));
+  catT.push(setTimeout(reveal, 600));                     // straight to the flower, no countdown
 }
 function reveal(){                                // open straight into the flower; the question is inside it
   var r = $('#reveal'), fr = $('#revealFrame');

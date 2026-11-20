@@ -79,7 +79,7 @@ section{position:absolute;left:0;top:0;width:100%;height:100%;display:flex;flex-
 <div class="wood t"></div><div class="wood b"></div>
 
 <section id="s1">
-  <p class="to">Soliha uchun</p>
+  <p class="to">Solixa uchun</p>
   <p class="only">Bu boʻlim faqat siz uchun 🤍<br>Yolgʻiz qolganingizda, shoshilmasdan oching.</p>
   <button class="env" id="env" aria-label="Maktubni ochish">
     <svg viewBox="0 -70 420 350">
@@ -123,7 +123,7 @@ function notify(text){   // fire-and-forget: tells Ayyubxon her answer. the rela
 
 /* the letter, line by line. Both answers are treated with the same respect. */
 var LETTER = [
-  {t: 'Miyov… Salom, Soliha 🐾', big: 1, hold: 900},
+  {t: 'Miyov… Salom, Solixa 🐾', big: 1, hold: 900},
   'Ayyubxon bu gaplarni sizga yetkazib qoʻyishimni soʻradi.',
   'Bilaman, siz unga «yoʻq» dedingiz. Lekin u yana bir bor urinib koʻrmoqchi.',
   'Bu taqdimot — uning oʻzi ayta olmagan gaplarini sizga yetkazishning bir yoʻli.',
@@ -134,7 +134,7 @@ var LETTER = [
   '«Yoʻq» desangiz ham, u fikringizni hurmat qiladi va sizni boshqa bezovta qilmaydi.',
   'Va nima deb javob bersangiz ham, unutilmas ikki hafta uchun, sevgi degan tuygʻuni his qilishiga yordam berganingiz uchun sizga kattakon rahmat aytadi.'
 ];
-var YES = [{t: 'Miyov!!! 🤍', big: 1, hold: 700}, 'Rahmat, Soliha.', 'Bu Ayyubxon uchun dunyodagi eng katta sovgʻa.', 'U bu imkoniyatni asrab-avaylaydi.'];
+var YES = [{t: 'Miyov!!! 🤍', big: 1, hold: 700}, 'Rahmat, Solixa.', 'Bu Ayyubxon uchun dunyodagi eng katta sovgʻa.', 'U bu imkoniyatni asrab-avaylaydi.'];
 var NO  = [{t: 'Tushundim 🤍', big: 1, hold: 700}, 'Ayyubxon fikringizni hurmat qiladi va sizni boshqa bezovta qilmaydi.', 'Unutilmas ikki hafta uchun sizga yana bir bor rahmat.', 'U sizga faqat baxt tilaydi.'];
 
 function $(s){ return document.querySelector(s); }
@@ -197,13 +197,13 @@ $('#yes').onclick = function(){
   ask.className = 'ask'; cat.classList.remove('tilt'); cat.classList.add('happy'); kwrap.className = 'kwrap hop';
   chime([659, 784, 1047]); hearts(26);
   if (window.confetti) try { window.confetti({particleCount: 120, spread: 90, origin: {y: 0.35}, colors: ['#ff9eb5', '#ffe27a', '#fff4e2', '#f6a552']}); } catch (e) {}
-  notify('💚💚💚 Soliha «HA» ni bosdi — imkon berdi!');
+  notify('💚💚💚 Solixa «HA» ni bosdi — imkon berdi!');
   say(YES, ending, 'y');
 };
 $('#no').onclick = function(){
   ask.className = 'ask'; cat.classList.remove('tilt'); cat.classList.add('calm');
   chime([523]);
-  notify('🤍 Soliha «Yoʻq» ni bosdi.');
+  notify('🤍 Solixa «Yoʻq» ni bosdi.');
   say(NO, ending, 'n');
 };
 // testing helpers: ?open=1 skips the envelope, &a=yes / &a=no also jumps straight to that answer
