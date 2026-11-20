@@ -223,26 +223,28 @@ function playCat(){
   catEl.setAttribute('class', 'kitty');
   catFrame.classList.remove('play', 'gone', 'opening'); void catFrame.offsetWidth; catFrame.classList.add('play');
   catT.push(setTimeout(function(){ beep([880, 1320], 0.07, 'triangle', 0.06); }, 1500));
-  var LN = [
-    {t: 'Miyov! Prezentatsiyamiz tugadi 🐾', v: VO + 'p1.m4a', hold: 500, before: function(){ subs.classList.add('on'); }},
-    {t: 'Vaqt ajratib tinglaganingiz uchun hammangizga katta rahmat 🤍', v: VO + 'p2.m4a'},
-    {t: 'Hammangizga yoqqan boʻlsa, biz juda xursandmiz. Buni Solixa bilan kechasi bilan uxlamay tayyorladik ✨', v: VO + 'p3.m4a',
-     after: function(){ boom({particleCount: 110, spread: 90, origin: {y: 0.7}}); }, hold: 2200}
-  ];
-  if (!FOR_SOLIXA) LN.push({t: 'Xayr, miyov! 👋', before: function(){ catEl.classList.add('wave'); }, hold: 1600});
+  // one Gulnoza recording, cut into six clips; each line types in sync with its clip and the mouth follows
   catTalk = Kitty.talk({
     cat: catEl, start: 2500, blip: mew,
-    lines: LN,
+    lines: [
+      {t: 'Miyov! Mana, prezentatsiyamiz ham nihoyasiga yetdi 🐾', v: VO + 'p1.m4a', before: function(){ subs.classList.add('on'); }},
+      {t: 'Bizni oxirigacha tinglaganingiz uchun hammangizga katta rahmat 🤍', v: VO + 'p2.m4a'},
+      {t: 'Agar sizga yoqqan boʻlsa — bu biz uchun eng katta mukofot ✨', v: VO + 'p3.m4a',
+       after: function(){ boom({particleCount: 110, spread: 90, origin: {y: 0.7}}); }},
+      {t: 'Buni Solixa bilan kechasi bilan uxlamay, chin dildan tayyorladik', v: VO + 'p4.m4a'},
+      {t: 'Ustoz, iltimos, bahoni «besh» qoʻyishni unutmang 😄', v: VO + 'p5.m4a', before: function(){ catEl.classList.add('tilt'); }, after: function(){ catEl.classList.remove('tilt'); }},
+      {t: 'Xayr, miyov! Yana koʻrishguncha 👋', v: VO + 'p6.m4a', before: function(){ catEl.classList.add('wave'); }, hold: 1400}
+    ],
     line: function(){ out.textContent = ''; return out; },
     done: function(){
       if (FOR_SOLIXA){                                      // the private link: the cat fades and the gift appears
         catEl.classList.add('happy');
         catT.push(setTimeout(function(){ subs.classList.remove('on'); catFrame.classList.add('gone'); }, 1200));
         catT.push(setTimeout(function(){ $('#giftIntro').classList.add('on'); sfx.pop(); }, 2000));
-      } else {                                              // the class version: just a goodbye and a replay button
+      } else {                                              // the class version: a goodbye wave and a replay button
         catEl.classList.remove('wave'); catEl.classList.add('happy'); hearts(16); sfx.ok();
         boom({particleCount: 90, angle: 60, spread: 70, origin: {x: 0, y: 0.75}}); boom({particleCount: 90, angle: 120, spread: 70, origin: {x: 1, y: 0.75}});
-        catT.push(setTimeout(function(){ catAfter.classList.add('on'); }, 1500));
+        catT.push(setTimeout(function(){ catAfter.classList.add('on'); }, 1400));
       }
     }
   });
@@ -272,7 +274,7 @@ function unlockAudio(){
 document.addEventListener('pointerdown', unlockAudio, true);
 document.addEventListener('keydown', unlockAudio, true);
 catFrame._enter = function(){
-  Kitty.preload(['p1','p2','p3'].map(function(n){ return VO + n + '.m4a'; }));
+  Kitty.preload(['p1','p2','p3','p4','p5','p6'].map(function(n){ return VO + n + '.m4a'; }));
   if (audioReady) playCat();
   else { pendingCat = true; $('#catTap').classList.add('on'); }
 };
@@ -281,7 +283,7 @@ catFrame._leave = function(){
   catFrame.classList.remove('opening', 'gone');
   $('#giftIntro').classList.remove('on'); $('#reveal').classList.remove('on'); $('#revealFrame').src = 'about:blank';
 };
-catFrame._next = function(){ return !!(catTalk && catTalk.skip()); };    // → hurries him along, line by line
+catFrame._next = function(){ return !!(catTalk && catTalk.skip()); };    // → hurries him to the next line
 
 /* ───────── fun bits: sounds, confetti ───────── */
 var AC;
