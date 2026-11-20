@@ -219,7 +219,7 @@ function playCat(){
   stopCat();
   var subs = $('#subs'), out = $('#subT');
   catAfter.classList.remove('on'); subs.classList.remove('on'); out.textContent = ''; $('#khearts').innerHTML = '';
-  $('#giftIntro').classList.remove('on'); $('#record').classList.remove('on');
+  $('#giftIntro').classList.remove('on');
   $('#reveal').classList.remove('on'); $('#revealFrame').src = 'about:blank';
   catEl.setAttribute('class', 'kitty');
   catFrame.classList.remove('play', 'gone', 'opening'); void catFrame.offsetWidth; catFrame.classList.add('play');
@@ -289,7 +289,7 @@ catFrame._enter = function(){
 };
 catFrame._leave = function(){
   stopCat(); pendingCat = false; $('#catTap').classList.remove('on');
-  catFrame.classList.remove('opening', 'gone'); $('#record').classList.remove('on');
+  catFrame.classList.remove('opening', 'gone');
   $('#giftIntro').classList.remove('on'); $('#reveal').classList.remove('on'); $('#revealFrame').src = 'about:blank';
 };
 catFrame._next = function(){ return !!(catTalk && catTalk.skip()); };    // → hurries him along, line by line
