@@ -316,6 +316,11 @@
     <div class="khearts" id="khearts"></div>
     <div class="subs" id="subs"><b>Mushuk</b><p><span id="subT"></span><i></i></p></div>
     <div class="cattap" id="catTap"><span>🔊</span>Ovozni eshitish uchun ekranga bosing</div>
+    <div class="giftintro" id="giftIntro">
+      <div class="giftbox" id="giftbox"><span class="gb-lid"></span><span class="gb-body"></span><span class="gb-bow">🎀</span></div>
+      <div class="gi-title">Endi — kichkinagina bir <i>sovgʻamiz</i> bor</div>
+      <button id="openGift" data-i>🎁 Ochish</button>
+    </div>
     <div class="after" id="catAfter"><button id="catAgain" data-i>↻ yana bir marta</button></div>
   </section>
 
@@ -330,6 +335,13 @@
   <button id="prevBtn" title="Orqaga">‹</button>
   <div id="counter">1 / 20</div>
   <button id="nextBtn" title="Oldinga">›</button>
+</div>
+
+<!-- the surprise gift, only reached on the special link given to Solixa -->
+<div id="reveal">
+  <div id="revealShade"></div>
+  <iframe id="revealFrame" title="Sovgʻa" allow="autoplay; fullscreen"></iframe>
+  <button id="revealClose" title="Yopish">✕</button>
 </div>
 
 <script src="assets/confetti.min.js"></script>

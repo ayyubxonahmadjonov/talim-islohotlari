@@ -219,26 +219,47 @@ function playCat(){
   stopCat();
   var subs = $('#subs'), out = $('#subT');
   catAfter.classList.remove('on'); subs.classList.remove('on'); out.textContent = ''; $('#khearts').innerHTML = '';
+  $('#giftIntro').classList.remove('on'); $('#reveal').classList.remove('on'); $('#revealFrame').src = 'about:blank';
   catEl.setAttribute('class', 'kitty');
   catFrame.classList.remove('play', 'gone', 'opening'); void catFrame.offsetWidth; catFrame.classList.add('play');
   catT.push(setTimeout(function(){ beep([880, 1320], 0.07, 'triangle', 0.06); }, 1500));
+  var LN = [
+    {t: 'Miyov! Prezentatsiyamiz tugadi 🐾', v: VO + 'p1.m4a', hold: 500, before: function(){ subs.classList.add('on'); }},
+    {t: 'Vaqt ajratib tinglaganingiz uchun hammangizga katta rahmat 🤍', v: VO + 'p2.m4a'},
+    {t: 'Hammangizga yoqqan boʻlsa, biz juda xursandmiz. Buni Solixa bilan kechasi bilan uxlamay tayyorladik ✨', v: VO + 'p3.m4a',
+     after: function(){ boom({particleCount: 110, spread: 90, origin: {y: 0.7}}); }, hold: 2200}
+  ];
+  if (!FOR_SOLIXA) LN.push({t: 'Xayr, miyov! 👋', before: function(){ catEl.classList.add('wave'); }, hold: 1600});
   catTalk = Kitty.talk({
     cat: catEl, start: 2500, blip: mew,
-    lines: [
-      {t: 'Miyov! Prezentatsiyamiz tugadi 🐾', v: VO + 'p1.m4a', hold: 500, before: function(){ subs.classList.add('on'); }},
-      {t: 'Vaqt ajratib tinglaganingiz uchun hammangizga katta rahmat 🤍', v: VO + 'p2.m4a'},
-      {t: 'Hammangizga yoqqan boʻlsa, biz juda xursandmiz. Buni Solixa bilan kechasi bilan uxlamay tayyorladik ✨', v: VO + 'p3.m4a',
-       after: function(){ boom({particleCount: 110, spread: 90, origin: {y: 0.7}}); }, hold: 2200},
-      {t: 'Xayr, miyov! 👋', before: function(){ catEl.classList.add('wave'); }, hold: 1600}
-    ],
+    lines: LN,
     line: function(){ out.textContent = ''; return out; },
     done: function(){
-      catEl.classList.remove('wave'); catEl.classList.add('happy'); hearts(16); sfx.ok();
-      boom({particleCount: 90, angle: 60, spread: 70, origin: {x: 0, y: 0.75}}); boom({particleCount: 90, angle: 120, spread: 70, origin: {x: 1, y: 0.75}});
-      catT.push(setTimeout(function(){ catAfter.classList.add('on'); }, 1500));
+      if (FOR_SOLIXA){                                      // the private link: the cat fades and the gift appears
+        catEl.classList.add('happy');
+        catT.push(setTimeout(function(){ subs.classList.remove('on'); catFrame.classList.add('gone'); }, 1200));
+        catT.push(setTimeout(function(){ $('#giftIntro').classList.add('on'); sfx.pop(); }, 2000));
+      } else {                                              // the class version: just a goodbye and a replay button
+        catEl.classList.remove('wave'); catEl.classList.add('happy'); hearts(16); sfx.ok();
+        boom({particleCount: 90, angle: 60, spread: 70, origin: {x: 0, y: 0.75}}); boom({particleCount: 90, angle: 120, spread: 70, origin: {x: 1, y: 0.75}});
+        catT.push(setTimeout(function(){ catAfter.classList.add('on'); }, 1500));
+      }
     }
   });
 }
+/* the gift lives behind a private link, given only to Solixa; the class version never shows it */
+var FOR_SOLIXA = /[?&](forsolixa|solixa|surprise)=1/.test(location.search);
+var GIFT_URL = 'https://ayyubxonahmadjonov.github.io/soliha/gul/';
+function openGift(){
+  if (catFrame.classList.contains('opening')) return;
+  $('#giftIntro').classList.remove('on'); catFrame.classList.add('opening'); sfx.pop();
+  catT.push(setTimeout(function(){
+    var fr = $('#revealFrame'); fr.src = GIFT_URL; $('#reveal').classList.add('on');
+    boom({particleCount: 160, spread: 100, origin: {y: 0.5}});
+  }, 600));
+}
+$('#openGift').onclick = openGift;
+$('#revealClose').onclick = function(){ $('#reveal').classList.remove('on'); setTimeout(function(){ $('#revealFrame').src = 'about:blank'; }, 1000); };
 $('#catAgain').onclick = function(){ playCat(); };
 /* browsers block sound until the viewer interacts: the first tap/key anywhere wakes the audio up.
    if the cat stop is opened cold (e.g. a direct #20 link) it waits for that first tap instead of talking silently. */
@@ -258,6 +279,7 @@ catFrame._enter = function(){
 catFrame._leave = function(){
   stopCat(); pendingCat = false; $('#catTap').classList.remove('on');
   catFrame.classList.remove('opening', 'gone');
+  $('#giftIntro').classList.remove('on'); $('#reveal').classList.remove('on'); $('#revealFrame').src = 'about:blank';
 };
 catFrame._next = function(){ return !!(catTalk && catTalk.skip()); };    // → hurries him along, line by line
 
