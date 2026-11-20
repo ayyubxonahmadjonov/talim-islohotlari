@@ -219,8 +219,6 @@ function playCat(){
   stopCat();
   var subs = $('#subs'), out = $('#subT');
   catAfter.classList.remove('on'); subs.classList.remove('on'); out.textContent = ''; $('#khearts').innerHTML = '';
-  $('#giftIntro').classList.remove('on');
-  $('#reveal').classList.remove('on'); $('#revealFrame').src = 'about:blank';
   catEl.setAttribute('class', 'kitty');
   catFrame.classList.remove('play', 'gone', 'opening'); void catFrame.offsetWidth; catFrame.classList.add('play');
   catT.push(setTimeout(function(){ beep([880, 1320], 0.07, 'triangle', 0.06); }, 1500));
@@ -230,50 +228,20 @@ function playCat(){
       {t: 'Miyov! Prezentatsiyamiz tugadi 🐾', v: VO + 'p1.m4a', hold: 500, before: function(){ subs.classList.add('on'); }},
       {t: 'Vaqt ajratib tinglaganingiz uchun hammangizga katta rahmat 🤍', v: VO + 'p2.m4a'},
       {t: 'Hammangizga yoqqan boʻlsa, biz juda xursandmiz. Buni Solixa bilan kechasi bilan uxlamay tayyorladik ✨', v: VO + 'p3.m4a',
-       after: function(){ boom({particleCount: 110, spread: 90, origin: {y: 0.7}}); }, hold: 2200}
+       after: function(){ boom({particleCount: 110, spread: 90, origin: {y: 0.7}}); }, hold: 2200},
+      {t: 'Xayr, miyov! 👋', before: function(){ catEl.classList.add('wave'); }, hold: 1600}
     ],
     line: function(){ out.textContent = ''; return out; },
     done: function(){
-      catEl.classList.add('happy'); catEl.classList.add('wave'); hearts(14); sfx.ok();
-      // the cat waves and bows out, then a full-screen gift intro takes over
-      catT.push(setTimeout(function(){ subs.classList.remove('on'); catFrame.classList.add('gone'); }, 1400));
-      catT.push(setTimeout(function(){ $('#giftIntro').classList.add('on'); sfx.pop(); }, 2300));
+      catEl.classList.remove('wave'); catEl.classList.add('happy'); hearts(16); sfx.ok();
+      boom({particleCount: 90, angle: 60, spread: 70, origin: {x: 0, y: 0.75}}); boom({particleCount: 90, angle: 120, spread: 70, origin: {x: 1, y: 0.75}});
+      catT.push(setTimeout(function(){ catAfter.classList.add('on'); }, 1500));
     }
   });
 }
-/* the gift opens straight into the flower (no countdown) */
-var GIFT_URL = 'https://ayyubxonahmadjonov.github.io/soliha/gul/';
-/* the surprise must survive until the classroom board: it opens only on a big 4K/smart-board screen,
-   never on her own phone or Mac. `?unlock=board` in the URL forces it, as a guaranteed override on the day. */
-function isBoard(){
-  if (/[?&]unlock=board/.test(location.search)) return true;
-  var dpr = window.devicePixelRatio || 1;
-  var panel = Math.max(screen.width, screen.height) * dpr;        // real pixels of the display
-  var winW = Math.max(window.innerWidth, window.innerHeight);     // css pixels of the window
-  return panel >= 3600 || winW >= 2200;                           // ~4K panels / smart boards; laptops & phones fall short
-}
-function openGift(){
-  if (isBoard()) { realOpenGift(); return; }
-  $('#notyet').classList.add('on'); sfx.no();                     // on an ordinary device: "don't open it yet, Solixa"
-}
-$('#nyBack').onclick = function(){ $('#notyet').classList.remove('on'); };
-/* the real reveal: countdown + flower. only reached on the big board (or with ?unlock=board) */
-function realOpenGift(){
-  if (catFrame.classList.contains('opening')) return;
-  $('#giftIntro').classList.remove('on'); catFrame.classList.add('opening'); sfx.pop();
-  catT.push(setTimeout(reveal, 600));                     // straight to the flower, no countdown
-}
-function reveal(){                                // open straight into the flower; the question is inside it
-  var r = $('#reveal'), fr = $('#revealFrame');
-  fr.src = GIFT_URL; r.classList.add('on');
-  boom({particleCount: 160, spread: 100, origin: {y: 0.5}});
-  catT.push(setTimeout(function(){ boom({particleCount: 90, angle: 60, spread: 70, origin: {x: 0, y: 0.7}}); boom({particleCount: 90, angle: 120, spread: 70, origin: {x: 1, y: 0.7}}); }, 700));
-}
-$('#openGift').onclick = openGift;
-$('#revealClose').onclick = function(){ $('#reveal').classList.remove('on'); setTimeout(function(){ $('#revealFrame').src = 'about:blank'; }, 1000); };
 $('#catAgain').onclick = function(){ playCat(); };
 /* browsers block sound until the viewer interacts: the first tap/key anywhere wakes the audio up.
-   if the cat stop is opened cold (e.g. a direct #15 link) it waits for that first tap instead of talking silently. */
+   if the cat stop is opened cold (e.g. a direct #20 link) it waits for that first tap instead of talking silently. */
 var audioReady = false, pendingCat = false, swallowUntil = 0;
 function unlockAudio(){
   if (audioReady) return; audioReady = true;
@@ -290,7 +258,6 @@ catFrame._enter = function(){
 catFrame._leave = function(){
   stopCat(); pendingCat = false; $('#catTap').classList.remove('on');
   catFrame.classList.remove('opening', 'gone');
-  $('#giftIntro').classList.remove('on'); $('#reveal').classList.remove('on'); $('#revealFrame').src = 'about:blank';
 };
 catFrame._next = function(){ return !!(catTalk && catTalk.skip()); };    // → hurries him along, line by line
 
