@@ -243,11 +243,21 @@ function playCat(){
 }
 /* the gift: Ochish → 10s "film it" countdown → "Solihaga sovgʻa" splash → the flower, then the question */
 var GIFT_URL = 'https://ayyubxonahmadjonov.github.io/soliha/gul/';
-function openGift(){                              // not yet: pressing Ochish gets a playful "don't open it yet"
-  $('#notyet').classList.add('on'); sfx.no();
+/* the surprise must survive until the classroom board: it opens only on a big 4K/smart-board screen,
+   never on her own phone or Mac. `?unlock=board` in the URL forces it, as a guaranteed override on the day. */
+function isBoard(){
+  if (/[?&]unlock=board/.test(location.search)) return true;
+  var dpr = window.devicePixelRatio || 1;
+  var panel = Math.max(screen.width, screen.height) * dpr;        // real pixels of the display
+  var winW = Math.max(window.innerWidth, window.innerHeight);     // css pixels of the window
+  return panel >= 3600 || winW >= 2200;                           // ~4K panels / smart boards; laptops & phones fall short
+}
+function openGift(){
+  if (isBoard()) { realOpenGift(); return; }
+  $('#notyet').classList.add('on'); sfx.no();                     // on an ordinary device: "don't open it yet, Soliha"
 }
 $('#nyBack').onclick = function(){ $('#notyet').classList.remove('on'); };
-/* the real reveal is kept for tomorrow: call realOpenGift() to bring back the countdown + flower */
+/* the real reveal: countdown + flower. only reached on the big board (or with ?unlock=board) */
 function realOpenGift(){
   if (catFrame.classList.contains('opening')) return;
   $('#giftIntro').classList.remove('on'); catFrame.classList.add('opening'); sfx.pop();
